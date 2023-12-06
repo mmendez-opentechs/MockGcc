@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="OpenAPIs\swagger.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Delegate.SassBuilder" Version="1.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.4" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="6.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="NSwag.ApiDescription.Client" Version="13.16.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Config\appConfig_UI.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Config\nlog_ui.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+    <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Components\ButtonFooterPanel\ButtonFooterPanel.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\ButtonFooterPanel\Components\DidNotVerifyButton.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\ButtonFooterPanel\Components\EnrollButton.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\ButtonFooterPanel\Components\ThirdPartyButton.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\CustomerSearchPanel\Components\SearchButton.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\CustomerSearchPanel\Components\SearchResultsTextField.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\CustomerSearchPanel\Components\SearchTypeDropDownList.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\CustomerSearchPanel\CustomerSearchPanel.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\InstructionsPanel\Components\AgentInstructions.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\InstructionsPanel\InstructionsPanel.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\MemberProfilePanel\Components\AuthButton.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\MemberProfilePanel\Components\BusinessUnit.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\MemberProfilePanel\Components\CallerID.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\MemberProfilePanel\Components\Member.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\MemberProfilePanel\Components\SelectedMemberMemberNumber.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\MemberProfilePanel\Components\SelectedMemberSecurityPassword.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\MemberProfilePanel\Components\SelectedMemberTaxID.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\MemberProfilePanel\MemberProfilePanel.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\PreVerifiedMemberDataPanel\Components\CallSkill.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\PreVerifiedMemberDataPanel\Components\MemberEnteredNumber.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\PreVerifiedMemberDataPanel\Components\PersonPreVerified.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Components\PreVerifiedMemberDataPanel\Components\ResourcesDropDown.razor" />
+    <_ContentIncludedByDefault Remove="OpenAPIs\swagger.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\Components\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,10 @@
+﻿{
+  "GadgetServiceConfig": {
+    "URL": "https://localhost:44371"
+  },
+  "RetryPolicyConfig": {
+    "RetryCount": 3,
+    "BreakDuration": 30,
+    "TimeoutDuration": 3
+  }
+}

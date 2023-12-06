@@ -1,0 +1,83 @@
+﻿@page "/index"
+
+@namespace Components.Index
+
+@using MockGcc.UI.ViewModels
+
+@inject IMainViewModel MainViewModel
+
+<PageTitle>Mock Gcc</PageTitle>
+
+<body>
+    <div style="display:flex;padding-bottom:15px;">
+        <img decoding="async" width="201" height="41" src="https://open-techs.com/wp-content/uploads/2022/11/logo-header.svg">
+        <div></div>
+    </div>
+    <div style="display:flex;gap:10px;">
+        <div style="display:flex;flex-direction:column;height:200px;width:200px;border-radius:10px;border:solid 2px #482254;">
+            <div style="border-bottom:dashed;text-align:center;border-color:#97efe9;">
+                Mock EWS PersonInfo
+            </div>
+            <div style="flex-grow:1;padding:5px;">
+                <div>Requests/s: @MockPersonInfoRequestFrequency</div>
+                <div style="">
+                    <input style="width:100%;" min="1" max="10000" step="10" type="range"
+                           value="@MockPersonInfoRequestFrequency"
+                           @onchange="@((args) => OnPersonInfoFrequencyChange(args?.Value?.ToString()))" />
+                </div>
+                <div style="font-size:small;">
+                    Avg. Latency: @MainViewModel.MockPersonInfoLatency
+                </div>
+            </div>
+        </div>
+        <div style="display:flex;flex-direction:column;height:200px;width:200px;border-radius:10px;border:solid 2px #482254;">
+            <div style="border-bottom:dashed;text-align:center;border-color:#97efe9;">
+                Mock EWS Account
+            </div>
+            <div style="flex-grow:1;padding:5px;">
+                <div>Requests/s: @MockAccountRequestFrequency</div>
+                <div style="">
+                    <input style="width:100%;" min="1" max="1000" step="10" type="range"
+                           value="@MockAccountRequestFrequency"
+                           @onchange="@((args) => OnAccountFrequencyChange(args?.Value?.ToString()))" />
+                </div>
+                <div style="font-size:small;">
+                    Avg. Latency: @MainViewModel.MockAccountLatency
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+@code
+{
+    private int MockPersonInfoRequestFrequency { get; set; } = 10;
+    private int MockAccountRequestFrequency { get; set; } = 10;
+
+    public void OnPersonInfoFrequencyChange(string? step)
+    {
+        MockPersonInfoRequestFrequency = Convert.ToInt32(step);
+
+        MainViewModel.UpdateFrequency(MockPersonInfoRequestFrequency, MockAccountRequestFrequency);
+    }
+
+    public void OnAccountFrequencyChange(string? step)
+    {
+        MockAccountRequestFrequency = Convert.ToInt32(step);
+
+        MainViewModel.UpdateFrequency(MockPersonInfoRequestFrequency, MockAccountRequestFrequency);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MainViewModel.PropertyChanged += async (sender, e) =>
+        {
+            await InvokeAsync(() =>
+            {
+                StateHasChanged();
+            });
+        };
+
+        await base.OnInitializedAsync();
+    }
+}
