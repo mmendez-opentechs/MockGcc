@@ -10,8 +10,6 @@ try
     builder.RootComponents.Add<App>("#app");
     builder.RootComponents.Add<HeadOutlet>("head::after");
 
-    builder.Services.ConfigureSettings(builder.Configuration);
-
     builder.Services.ConfigureMockGccApiClient(builder.HostEnvironment.BaseAddress);
 
     // Page ViewModels

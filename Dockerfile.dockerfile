@@ -1,17 +1,20 @@
-FROM mcr.microsoft.com/devcontainers/dotnet
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 8080
 
-RUN apt-get update && apt-get install -y openssh-server
-RUN mkdir /var/run/sshd
-RUN echo 'root:screencast' | chpasswd
-RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["MockGcc.Service/MockGcc.Service.csproj", "MockGcc.Service/."]
+COPY ["MockGcc.UI/MockGcc.UI.csproj", "MockGcc.UI/."]
+RUN dotnet restore "MockGcc.Service/MockGcc.Service.csproj"
+COPY . .
+RUN dotnet build "MockGcc.Service/MockGcc.Service.csproj" -c Release -o /app/build
 
-# SSH login fix. Otherwise user is kicked off after login
-RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+FROM build AS publish
+RUN dotnet publish "MockGcc.Service/MockGcc.Service.csproj" -c Release -o /app/publish
 
-ENV NOTVISIBLE "in users profile"
-RUN echo "export VISIBLE=now" >> /etc/profile
-
-COPY . /app
-
-EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+FROM base AS final
+WORKDIR /app
+ENV ASPNETCORE_URLS=http://+:8080
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "MockGcc.Service.dll"]

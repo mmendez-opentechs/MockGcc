@@ -22,8 +22,6 @@ namespace MockGcc.Service
             // Create an ILogger.
             _logger = nlogLoggerProvider.CreateLogger(typeof(Startup).FullName);
             #endregion
-
-            LoadConfigurationFiles();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -100,18 +98,6 @@ namespace MockGcc.Service
         {
             services.AddHostedService<MockServiceRequester>();
             
-        }
-
-        private void LoadConfigurationFiles()
-        {
-            #region Config Files
-            IConfigurationBuilder builder = new ConfigurationBuilder().SetBasePath(_env.ContentRootPath);
-
-            builder.AddJsonFile($@"Config\appConfig.json", optional: false, reloadOnChange: false);
-
-            _configurationRoot = builder.Build();
-            _logger.LogDebug("Configuration files loaded.");
-            #endregion
         }
         #endregion
     }
