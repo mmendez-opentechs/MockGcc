@@ -56,7 +56,7 @@ namespace MockGcc.UI.BackgroundServices
             {
                 var latency = await _client.CallAccount(); // returns latency
 
-                _mainViewModel.MockPersonInfoLatency = latency;
+                _mainViewModel.MockAccountLatency = latency;
             }
             catch (Exception exception)
             {
