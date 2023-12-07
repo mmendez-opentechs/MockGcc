@@ -18,14 +18,24 @@ try
     builder.Services.AddSingleton<GetLatencyService>();
     builder.Services.AddHostedService<GetLatencyService>();
 
+    builder.Services.AddSingleton<CallGetPersonInfoService>();
+    builder.Services.AddHostedService<CallGetPersonInfoService>();
+
+    builder.Services.AddSingleton<CallGetAccountService>();
+    builder.Services.AddHostedService<CallGetAccountService>();
+    
     var build = builder.Build();
 
-    var hostedService = build.Services.GetRequiredService<GetLatencyService>();
-    await hostedService.StartAsync(new CancellationToken());
+    var getLatencyService = build.Services.GetRequiredService<GetLatencyService>();
+    var callPersonInfoService = build.Services.GetRequiredService<CallGetPersonInfoService>();
+    var callAccountService = build.Services.GetRequiredService<CallGetAccountService>();
+    await getLatencyService.StartAsync(new CancellationToken());
+    await callPersonInfoService.StartAsync(new CancellationToken());
+    await callAccountService.StartAsync(new CancellationToken());
 
     await build.RunAsync();
 }
-catch (Exception exception)
+catch
 {
     // NLog: catch setup errors
     //logger.Error(exception, "MockGcc.UI could not start: Stopped program because of exception");

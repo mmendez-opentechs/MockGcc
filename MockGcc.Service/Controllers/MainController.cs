@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MockGcc.Service.HttpClients;
 using MockGcc.Service.State;
 using System.Text.Json;
 
@@ -10,16 +11,24 @@ namespace MockGcc.Service.Controllers
     public class MainController
     {
         private readonly ILogger _logger;
-        private readonly State.State _frequencyState;
+        private readonly State.State _state;
+        private readonly MockPersonInfoClient _mockPersonInfoClient;
+        private readonly MockAccountClient _mockAccountClient;
 
-        public MainController(ILogger logger, State.State frequencyState)
+        public MainController(
+            ILogger logger,
+            State.State frequencyState,
+            MockPersonInfoClient mockPersonInfoClient,
+            MockAccountClient mockAccountClient)
         {
             _logger = logger;
-            _frequencyState = frequencyState;
+            _state = frequencyState;
+            _mockPersonInfoClient = mockPersonInfoClient;
+            _mockAccountClient = mockAccountClient;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public IActionResult Get()
         {
             _logger.LogDebug("Called GetMemberData");
             
@@ -35,29 +44,53 @@ namespace MockGcc.Service.Controllers
         }
 
         [HttpPost]
-        [Route("setfrequency")]
-        public async Task<IActionResult> SetFrequency(State.State frequencyState)
+        [Route("setstate")]
+        public IActionResult SetState(State.State state)
         {
-            _logger.LogDebug("Called SetFrequency");
+            _logger.LogDebug("Called SetState");
 
             _logger.LogDebug("");
 
-            _frequencyState.MockPersonInfoRate = frequencyState.MockPersonInfoRate;
-            _frequencyState.MockAccountRate = frequencyState.MockAccountRate;
+            _state.MockPersonInfoRequestRate = state.MockPersonInfoRequestRate;
+            _state.MockAccountRequestRate = state.MockAccountRequestRate;
+            _state.TestHorizontalAutoscaling = state.TestHorizontalAutoscaling;
+            _state.TestVerticalAutoscaling = state.TestVerticalAutoscaling;
 
             return new OkResult();
         }
 
         [HttpPost]
         [Route("getlatency")]
-        public async Task<IActionResult> GetLatency()
+        public IActionResult GetLatency()
         {
             _logger.LogDebug("Called GetLatency");
 
-            return new ObjectResult(_frequencyState)
+            return new ObjectResult(_state)
             {
                 StatusCode = 200
             };
+        }
+
+        [HttpPost]
+        [Route("callPersonInfo")]
+        public async Task<IActionResult> CallPersonInfo()
+        {
+            _logger.LogDebug("Called GetLatency");
+
+            await _mockPersonInfoClient.CallPersonInfo();
+
+            return new OkResult();
+        }
+
+        [HttpPost]
+        [Route("callaccount")]
+        public async Task<IActionResult> CallAccount()
+        {
+            _logger.LogDebug("Called GetLatency");
+
+            await _mockAccountClient.CallAccountInfo();
+
+            return new OkResult();
         }
     }
 }

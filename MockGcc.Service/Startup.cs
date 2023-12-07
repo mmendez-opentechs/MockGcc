@@ -10,8 +10,6 @@ namespace MockGcc.Service
         private readonly IWebHostEnvironment _env;
         private readonly ILogger _logger;
 
-        private IConfigurationRoot _configurationRoot;
-
         public Startup(IWebHostEnvironment env)
         {
             _env = env;
@@ -44,8 +42,8 @@ namespace MockGcc.Service
         {
             var frequencyState = new State.State()
             {
-                MockAccountRate = 1,
-                MockPersonInfoRate = 1
+                MockAccountRequestRate = 1,
+                MockPersonInfoRequestRate = 1
             };
 
             services.AddSingleton(frequencyState);
@@ -96,8 +94,8 @@ namespace MockGcc.Service
 
         private void ConfigureBackgroundServices(IServiceCollection services)
         {
-            services.AddHostedService<MockServiceRequester>();
-            
+            services.AddHostedService<MockPersonInfoRequestService>();
+            services.AddHostedService<MockAccountRequestService>();
         }
         #endregion
     }

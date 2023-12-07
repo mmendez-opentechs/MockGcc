@@ -1,4 +1,5 @@
 ﻿using MockGcc.UI.HttpClients;
+using PropertyChanged;
 
 namespace MockGcc.UI.ViewModels
 {
@@ -13,13 +14,22 @@ namespace MockGcc.UI.ViewModels
 
         public int MockPersonInfoLatency { get; set; } = 82;
         public int MockAccountLatency { get; set; } = 73;
+        [OnChangedMethod(nameof(OnStateChanged))]
+        public int MockPersonInfoRequestRate { get; set; } = 10;
+        [OnChangedMethod(nameof(OnStateChanged))]
+        public int MockAccountRequestRate { get; set; } = 10;
+        [OnChangedMethod(nameof(OnStateChanged))]
+        public bool TestVerticalAutoscaling { get; set; } = false;
+        public bool TestHorizontalAutoscaling { get; set; } = false;
 
-        public async Task UpdateFrequency(int mockPersonInfoRate, int mockAccountRate)
+        public void OnStateChanged()
         {
-            await _mockGccServiceClient.UpdateFrequency(new State()
+            _mockGccServiceClient.SetState(new State()
             {
-                MockPersonInfoRate = mockPersonInfoRate,
-                MockAccountRate = mockAccountRate
+                MockPersonInfoRequestRate = MockPersonInfoRequestRate,
+                MockAccountRequestRate = MockAccountRequestRate,
+                TestHorizontalAutoscaling = TestHorizontalAutoscaling,
+                TestVerticalAutoscaling = TestVerticalAutoscaling
             });
         }
     }

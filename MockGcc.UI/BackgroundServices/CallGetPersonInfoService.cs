@@ -4,9 +4,9 @@ using MockGcc.UI.ViewModels;
 
 namespace MockGcc.UI.BackgroundServices
 {
-    public class GetLatencyService : BackgroundService
+    public class CallGetPersonInfoService : BackgroundService
     {
-        private readonly ILogger<GetLatencyService> _logger;
+        private readonly ILogger<CallGetPersonInfoService> _logger;
         private readonly MockGccServiceClient _client;
         private readonly IMainViewModel _mainViewModel;
 
@@ -14,8 +14,8 @@ namespace MockGcc.UI.BackgroundServices
 
         private bool _keepRunning = true;
 
-        public GetLatencyService(
-            ILogger<GetLatencyService> logger,
+        public CallGetPersonInfoService(
+            ILogger<CallGetPersonInfoService> logger,
             MockGccServiceClient client,
             IMainViewModel mainViewModel)
         {
@@ -26,24 +26,28 @@ namespace MockGcc.UI.BackgroundServices
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation($"{nameof(GetLatencyService)} running.");
-
-            using PeriodicTimer timer = new(TimeSpan.FromSeconds(1));
+            _logger.LogInformation($"{nameof(CallGetPersonInfoService)} running.");
 
             try
             {
                 _startTime = DateTime.Now;
-                while (await timer.WaitForNextTickAsync(stoppingToken) && _keepRunning)
+                while (_keepRunning)
                 {
-                    if (_mainViewModel.TestVerticalAutoscaling)
+                    if (_mainViewModel.TestHorizontalAutoscaling)
                     {
                         await DoWork();
+                        await Task.Delay((1000 / _mainViewModel.MockPersonInfoRequestRate), stoppingToken);
                     }
+                    else
+                    {
+                        await Task.Delay(1000, stoppingToken);
+                    }
+
                 }
             }
             catch (OperationCanceledException)
             {
-                _logger.LogInformation($"{nameof(GetLatencyService)} is stopping.");
+                _logger.LogInformation($"{nameof(CallGetPersonInfoService)} is stopping.");
             }
         }
 
@@ -51,10 +55,9 @@ namespace MockGcc.UI.BackgroundServices
         {
             try
             {
-                var _state = await _client.GetLatency();
+                var latency = await _client.CallPersonInfo(); // returns latency
 
-                _mainViewModel.MockPersonInfoLatency = _state?.MockPersonInfoLatency ?? 0;
-                _mainViewModel.MockAccountLatency = _state?.MockAccountLatency ?? 0;
+                _mainViewModel.MockPersonInfoLatency = latency;
             }
             catch (Exception exception)
             {
@@ -62,7 +65,7 @@ namespace MockGcc.UI.BackgroundServices
             }
 
             _logger.LogInformation(
-                $"{nameof(GetLatencyService)} is working");
+                $"{nameof(CallGetPersonInfoService)} is working");
         }
     }
 }

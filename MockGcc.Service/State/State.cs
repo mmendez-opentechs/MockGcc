@@ -2,10 +2,13 @@
 {
     public class State
     {
+        public bool TestVerticalAutoscaling { get; set; } = false;
+        public bool TestHorizontalAutoscaling { get; set; } = false;
+
         /** Mock PersonInfo State */
         public static readonly object MockPersonInfoStateLock = new object();
 
-        public int MockPersonInfoRate { get; set; }
+        public int MockPersonInfoRequestRate { get; set; }
 
         private int _mockPersonInfoLatency;
         public int MockPersonInfoLatency
@@ -32,7 +35,7 @@
 
         /** Mock Account State */
         public static readonly object MockAccountStateLock = new object();
-        public int MockAccountRate { get; set; }
+        public int MockAccountRequestRate { get; set; }
 
         private int _mockAccountLatency;
         public int MockAccountLatency {
