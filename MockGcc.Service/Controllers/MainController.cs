@@ -30,9 +30,9 @@ namespace MockGcc.Service.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            _logger.LogDebug("Called GetMemberData");
+            _logger.LogInformation("Called GetMemberData");
             
-            _logger.LogDebug("");
+            _logger.LogInformation("");
 
             var isEnabled = true;
             if (isEnabled)
@@ -47,9 +47,9 @@ namespace MockGcc.Service.Controllers
         [Route("setstate")]
         public IActionResult SetState(State.State state)
         {
-            _logger.LogDebug("Called SetState");
+            _logger.LogInformation("Called SetState");
 
-            _logger.LogDebug("");
+            _logger.LogInformation("");
 
             _state.MockPersonInfoRequestRate = state.MockPersonInfoRequestRate;
             _state.MockAccountRequestRate = state.MockAccountRequestRate;
@@ -63,7 +63,7 @@ namespace MockGcc.Service.Controllers
         [Route("getlatency")]
         public IActionResult GetLatency()
         {
-            _logger.LogDebug("Called GetLatency");
+            _logger.LogInformation("Called GetLatency");
 
             return new ObjectResult(_state)
             {
@@ -75,7 +75,7 @@ namespace MockGcc.Service.Controllers
         [Route("callPersonInfo")]
         public async Task<IActionResult> CallPersonInfo()
         {
-            _logger.LogDebug("Called GetLatency");
+            _logger.LogInformation("Called GetLatency");
 
             await _mockPersonInfoClient.CallPersonInfo();
 
@@ -86,7 +86,7 @@ namespace MockGcc.Service.Controllers
         [Route("callaccount")]
         public async Task<IActionResult> CallAccount()
         {
-            _logger.LogDebug("Called GetLatency");
+            _logger.LogInformation("Called GetLatency");
 
             await _mockAccountClient.CallAccountInfo();
 
