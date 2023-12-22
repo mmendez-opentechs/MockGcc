@@ -15,17 +15,19 @@ namespace MockGcc.Service.HttpClients
         /// Returns time elapsed in milliseconds
         /// </summary>
         /// <returns></returns>
-        public async Task<int> CallAccountInfo()
+        public async Task<(int, object)> CallAccountInfo()
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, "api/accountinfo");
 
             var stopwatch = Stopwatch.StartNew();
 
-            await _httpClient.SendAsync(request);
+            var response = await _httpClient.SendAsync(request);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
 
             stopwatch.Stop();
 
-            return (int)stopwatch.ElapsedMilliseconds;
+            return ((int)stopwatch.ElapsedMilliseconds, responseContent);
         }
     }
 }

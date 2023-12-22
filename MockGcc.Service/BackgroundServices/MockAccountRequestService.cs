@@ -26,7 +26,7 @@ namespace MockGcc.Service.BackgroundServices
 
                 if (_state.TestVerticalAutoscaling)
                 {
-                    var latency = await _mockAccountClient.CallAccountInfo();
+                    var (latency, _) = await _mockAccountClient.CallAccountInfo();
 
                     _state.SetMockAccountLatency(latency);
 

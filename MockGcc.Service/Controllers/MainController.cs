@@ -79,7 +79,10 @@ namespace MockGcc.Service.Controllers
 
             await _mockPersonInfoClient.CallPersonInfo();
 
-            return new OkResult();
+            return new ObjectResult(_state)
+            {
+                StatusCode = 200
+            };
         }
 
         [HttpPost]
@@ -88,9 +91,9 @@ namespace MockGcc.Service.Controllers
         {
             _logger.LogInformation("Called GetLatency");
 
-            await _mockAccountClient.CallAccountInfo();
+            var (_, response) = await _mockAccountClient.CallAccountInfo();
 
-            return new OkResult();
+            return new ObjectResult(response) { StatusCode = 200 };
         }
     }
 }
