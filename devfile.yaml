@@ -18,11 +18,11 @@ components:
       cpuLimit: '2'
       cpuRequest: '1'
       mountSources: true
-    endpoints:
-    - name: netcore-debug
-      targetPort: 5123
-      exposure: public
-      protocol: https
+      endpoints:
+      - name: netcore-debug
+        targetPort: 5123
+        exposure: public
+        protocol: https
 commands:
   - id: sll
     exec:
