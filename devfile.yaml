@@ -8,7 +8,7 @@ projects:
     name: mockgcc
     git:
       remotes:
-        origin: https://github.com/mmendez-opentechs/MockGcc.git
+        origin: https://github.com/mmendez-opentechs/mockgcc.git
 components:
   - name: universal-developer-image
     container:
@@ -18,9 +18,12 @@ components:
       cpuLimit: '2'
       cpuRequest: '1'
       mountSources: true
-      endpoints:
-      - name: netcore-debug
-        targetPort: 5123
-        exposure: public
-        protocol: https
-commands: []
+commands:
+  - id: sll
+    exec:
+      label: "Trust dev cert"
+      component: universal-developer-image
+      workingDir: ${PROJECTS_ROOT}/mockgcc
+      commandLine: dotnet dev-certs https --trust
+      group:
+        kind: run
