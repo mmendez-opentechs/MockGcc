@@ -1,0 +1,26 @@
+schemaVersion: 2.1.0
+metadata:
+  name: mockgcc
+attributes:
+  che-theia.eclipse.org/sidecar-policy: mergeImage
+projects:
+  - attributes: {}
+    name: mockgcc
+    git:
+      remotes:
+        origin: https://github.com/mmendez-opentechs/MockGcc.git
+components:
+  - name: universal-developer-image
+    container:
+      image: registry.redhat.io/devspaces/udi-rhel8@sha256:bb951a5040851e9f17ca0d21771b428296326753363fd4d2b87ab1f7d35e72b3
+      memoryLimit: '2Gi'
+      memoryRequest: '1Gi'
+      cpuLimit: '2'
+      cpuRequest: '1'
+      mountSources: true
+      endpoints:
+      - name: netcore-debug
+        targetPort: 5123
+        exposure: public
+        protocol: https
+commands: []

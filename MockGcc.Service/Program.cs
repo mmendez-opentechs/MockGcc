@@ -70,7 +70,7 @@ try
         app.UseWebAssemblyDebugging();
     }
 
-    app.UseHttpsRedirection();
+    //app.UseHttpsRedirection();
 
     app.UseBlazorFrameworkFiles();
     app.UseStaticFiles();
