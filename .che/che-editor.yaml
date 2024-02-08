@@ -80,7 +80,7 @@ inline:
       volume: {}
     - name: che-rider-injector
       container:
-        image: quay.io/mloriedo/che-rider:2021.3
+        image: quay.io/mloriedo/che-rider:2023.2
         command:
           - /projector/entrypoint-init-container.sh
         env:
